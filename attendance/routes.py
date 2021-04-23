@@ -4,13 +4,11 @@ from PIL import Image
 import os
 from attendance.models import User
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
-from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm
+from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm
 from attendance import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime,date
-from attendance.camera import camera_stream, person_name
-
-
+from attendance.camera import camera_stream, authenticate
 
 @app.route("/")
 @app.route("/home")
@@ -89,11 +87,30 @@ def account():
 	image_file = url_for('static', filename="img/"+current_user.image_file)
 	return render_template('account.html', title='Account', image_file=image_file, form= form)
 
-
+@app.route('/markattendance',methods=["GET","POST"])
+def markattendance():
+	form = markattendanceForm()
+	if form.validate_on_submit():
+		# add parameters to send
+		return redirect(url_for('detect'))
+	
+	return render_template('mark_attendance.html', form = form)
 
 @app.route('/detect')
 def detect():
     return render_template('index.html')
+
+@app.route('/addattendance')
+def addattendance():
+	# to add take entry number from params
+	is_true = authenticate("2018UCS0065")
+	if(is_true):
+		# todo add corresponding attendance into db
+		# add page instead
+		return "Success"
+	else:
+		# todo add extra page with prompt to go back
+		return "Not authenticated"
 
 def gen_frame():
     """Video streaming generator function."""

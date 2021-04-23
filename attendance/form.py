@@ -50,3 +50,7 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
 
+class markattendanceForm(FlaskForm):
+    entry_number = StringField('Entry Number', validators=[DataRequired()])
+    course_id = StringField('Course ID', validators=[DataRequired()])
+    submit = SubmitField('Mark Attendance')
