@@ -14,7 +14,7 @@ from attendance.camera import camera_stream, authenticate
 @app.route("/")
 @app.route("/home")
 def home():
-	return render_template('home.html')
+	return render_template('dashboard.html')
 
 
 @app.route("/register",methods=["GET","POST"])
