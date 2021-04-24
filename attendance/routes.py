@@ -138,6 +138,14 @@ def getattendance():
 	# add logic to get attendance
 	user_id = request.args.get('user_id')
 	course_id = request.args.get('course_id')
+    # TODO: Add approriete args from the request form.
+	date_upper = request.args.get('date_upper')
+	date_lower = request.args.get('date_lower')
+
+	records = db.Query(Attendance_Entry).filter(Attendance_Entry.User_ID==user_id, Attendance_Entry.Course_ID==course_id, Attendance_Entry.Date <= date_upper, Attendance_Entry.Date >= date_lower)
+
+    # List<>
+    # Get the list for days attended.
 
 	return "Attendance for the course"
 
