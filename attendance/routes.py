@@ -2,8 +2,7 @@ import secrets
 import sqlite3
 from PIL import Image
 import os
-from attendance.models import User
-from attendance.schemas.Student_Attendance_Entry import Student_Attendance_Entry
+from attendance.models import User, Attendance_Entry
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
 from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm
@@ -112,7 +111,10 @@ def addattendance():
 	course_id = request.args.get('course_id')
 	is_true = authenticate(user_id)
 	if(is_true):
-		# todo add the entry to table
+		attendance_entry = Attendance_Entry(Course_ID=course_id, User_ID=user_id,Date=datetime.now(),Semester=6)
+		print(attendance_entry.Date.strftime("%m/%d/%Y, %H:%M:%S"))
+		db.session.add(attendance_entry)
+		db.session.commit()
 		# todo add new page instead
 		return "Success"
 	else:

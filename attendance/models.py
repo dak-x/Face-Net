@@ -16,7 +16,12 @@ class User(db.Model, UserMixin):
 	def __repr__(self):
 		return "User( '{}', '{}', '{}')".format(self.username, self.email, self.password)
 
-
+class Attendance_Entry(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	Course_ID = db.Column(db.String(10),nullable=False)
+	Date = db.Column(db.DateTime,nullable=False)
+	Semester = db.Column(db.Integer,nullable=False)
+	User_ID = db.Column(db.String(20),nullable=False)
 
 
 
