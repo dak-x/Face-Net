@@ -141,7 +141,15 @@ def getattendance():
 
 	return "Attendance for the course"
 
+@app.route('/getregisteredstudents')
+# returns the list of students in the course
+def getregisteredstudents():
+	course_id = request.args.get('course_id')
+	student_list = takes.query.filter_by(Course_ID=course_id).all()
+	student_list = [x.User_ID for x in student_list]
 
+	print(student_list)
+	return "Student List"
 
 def gen_frame():
     """Video streaming generator function."""
