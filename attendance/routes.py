@@ -2,7 +2,7 @@ import secrets
 import sqlite3
 from PIL import Image
 import os
-from attendance.models import User, Attendance_Entry
+from attendance.models import User, Attendance_Entry, takes
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
 from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm
@@ -125,7 +125,11 @@ def addattendance():
 def getcourses():
 	# Shows all courses registered for student
 	user_id = request.args.get('user_id')
-	# add logic to get list of all courses registered by student
+	course_list = takes.query.all()
+	course_list = [x.Course_ID for x in course_list]
+	
+	# add webpage to show all registered courses, 
+	# send course list as a parameter
 	return "Course List"
 
 @app.route('/getattendance')
