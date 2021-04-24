@@ -3,6 +3,8 @@ import sqlite3
 from PIL import Image
 import os
 from attendance.models import User
+from attendance.schemas.Student_Attendance_Entry import Student_Attendance_Entry
+
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
 from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm
 from attendance import app, db, bcrypt
@@ -91,26 +93,49 @@ def account():
 def markattendance():
 	form = markattendanceForm()
 	if form.validate_on_submit():
-		# add parameters to send
-		return redirect(url_for('detect'))
+		user_id = form.entry_number.data
+		course_id = form.course_id.data
+		return redirect(url_for('detect', user_id=user_id, course_id=course_id))
 	
 	return render_template('mark_attendance.html', form = form)
 
 @app.route('/detect')
 def detect():
-    return render_template('index.html')
+	user_id = request.args.get('user_id')
+	course_id = request.args.get('course_id')
+	
+	return render_template('index.html', user_id=user_id, course_id=course_id)
 
 @app.route('/addattendance')
 def addattendance():
-	# to add take entry number from params
-	is_true = authenticate("2018UCS0065")
+	user_id = request.args.get('user_id')
+	course_id = request.args.get('course_id')
+	is_true = authenticate(user_id)
 	if(is_true):
-		# todo add corresponding attendance into db
-		# add page instead
+		# todo add the entry to table
+		# todo add new page instead
 		return "Success"
 	else:
 		# todo add extra page with prompt to go back
 		return "Not authenticated"
+
+@app.route('/getcourses')
+def getcourses():
+	# Shows all courses registered for student
+	user_id = request.args.get('user_id')
+	# add logic to get list of all courses registered by student
+	return "Course List"
+
+@app.route('/getattendance')
+# get attendance corresponding to the courseID
+def getattendance():
+	# add logic to get attendance
+	user_id = request.args.get('user_id')
+	course_id = request.args.get('course_id')
+
+	return "Attendance for the course"
+
+
 
 def gen_frame():
     """Video streaming generator function."""

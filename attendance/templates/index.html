@@ -22,7 +22,7 @@
         
             <h1  style="font-family: 'Holtwood One SC';  " class="mt-5"> Detect your Face</h1>
     </div>
-             <a class="btn btn-danger btn m-2" href="{{url_for('addattendance')}}"> Register </a>
+             <a class="btn btn-danger btn m-2" href="{{ url_for('addattendance', user_id = user_id, course_id= course_id) }}"> Register </a>
     <div class="col-lg-10  offset-lg-0" style="padding-left: 100px">
             <img style= "border: 2px solid black;"src="{{ url_for('video_feed') }}" width="100%">
     </div>

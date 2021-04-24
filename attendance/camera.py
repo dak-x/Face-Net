@@ -27,19 +27,25 @@ def authenticate(userID):
         test = face_recognition.load_image_file(os.path.join('attendance/datasets',userID+".png"))
     except:
         test = face_recognition.load_image_file(os.path.join('attendance/datasets',userID+".jpg"))
-    test_encoding = face_recognition.face_encodings(test)[0]
-    test_face_encodings.append(test_encoding)
-    ret, frame = video_capture.read()
-    small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
-    rgb_small_frame = small_frame[:, :, ::-1]
-    face_locations = face_recognition.face_locations(rgb_small_frame)
-    face_encoding = face_recognition.face_encodings(rgb_small_frame, face_locations)[0]
+    try:
+        test_encoding = face_recognition.face_encodings(test)[0]
+        test_face_encodings.append(test_encoding)
+        ret, frame = video_capture.read()
+        small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        rgb_small_frame = small_frame[:, :, ::-1]
+        face_locations = face_recognition.face_locations(rgb_small_frame)
+        face_encoding = face_recognition.face_encodings(rgb_small_frame, face_locations)[0]
 
-    face_distances = face_recognition.face_distance(test_face_encodings, face_encoding)
-    if (min(face_distances) > 0.6):
-        return False
-    else:
-        return True
+        face_distances = face_recognition.face_distance(test_face_encodings, face_encoding)
+        if (min(face_distances) > 0.4):
+            print(min(face_distances))
+            return False
+        else:
+            print(min(face_distances))
+            return True
+    except Exception as e:
+        print(e)
+        return authenticate(userID)
 
 
 def camera_stream():
