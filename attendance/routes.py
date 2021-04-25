@@ -143,9 +143,9 @@ def getattendance():
 	date_upper = request.args.get('date_upper')
 	date_lower = request.args.get('date_lower')
 
-	records = db.Query(Attendance_Entry).filter(Attendance_Entry.User_ID==user_id, Attendance_Entry.Course_ID==course_id, Attendance_Entry.Date <= date_upper, Attendance_Entry.Date >= date_lower)
+	records = Attendance_Entry.query.filter(Attendance_Entry.User_ID==user_id, Attendance_Entry.Course_ID==course_id, Attendance_Entry.Date <= date_upper, Attendance_Entry.Date >= date_lower)
 
-	slots = list(db.Query(TimeTable).filter(TimeTable.Course_ID==course_id))
+	slots = TimeTable.query.filter(TimeTable.Course_ID==course_id)
 
 	result = dict()
 
@@ -155,8 +155,8 @@ def getattendance():
 		
 		for slot in slots:
 			if(slot.Day == curr.weekday()):
-				st_time = slot.Start_Time
-				end_time = slot.End_Time
+				st_time = slot.Start_Time.time()
+				end_time = slot.End_Time.time()
 				class_happens = True
 				result[curr.day] = False
 				break
@@ -164,12 +164,12 @@ def getattendance():
 
 		if(class_happens):
 			for atten in records:
-				if(atten.Date.time() <= end_time and atten.Date.time() >= st_time ):
+				if(atten.Date.day == curr.day and  atten.Date.time() <= end_time and atten.Date.time() >= st_time ):
 					result[curr.day] = True
 		
-		curr += timedelta(day=1)
+		curr += timedelta(days=1)
 
-		return result
+	return result
 
 
 @app.route('/getregisteredstudents')

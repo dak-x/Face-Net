@@ -44,7 +44,7 @@ class Faculty(db.Model):
     Faculty_ID = db.Column(db.String(20),nullable=False,primary_key=True)
     Name = db.Column(db.String(60),nullable=False)
     Role = db.Column(db.String(40),nullable=False)
-    E-Mail = db.Column(db.String(30),nullable=False)
+    E_Mail = db.Column(db.String(30),nullable=False)
     Salary = db.Column(db.Integer,nullable=False)
     Dept_ID = db.Column(db.String(10),nullable=False)
     Path = db.Column(db.String(100),nullable=False)
@@ -63,9 +63,10 @@ class Course(db.Model):
     Credit_Hour = db.Column(db.Integer,nullable=False)
 
 class Employee_Attendance(db.Model):
-    Emp_ID = db.Column(db.String(20),nullable=False)
-    timein = db.Column(db.DateTime,nullable=False)
-    timeout = db.Column(db.DateTime,nullable=False)
+	id= db.Column(db.Integer, primary_key=True)
+	Emp_ID = db.Column(db.String(20),nullable=False)
+	timein = db.Column(db.DateTime,nullable=False)
+	timeout = db.Column(db.DateTime,nullable=False)
 
 class Attendance_Entry(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
