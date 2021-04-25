@@ -87,7 +87,8 @@ class Teaches(db.Model):
 class TimeTable(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     Course_ID = db.Column(db.String(10),nullable=False)
-    Day = db.Column(db.String(20),nullable=False)
+    # 0-Sunday, 1-Monday , .... 6-Saturday
+    Day = db.Column(db.Integer,nullable=False)
     Start_Time = db.Column(db.DateTime,nullable=False)
     End_Time = db.Column(db.DateTime,nullable=False)
     Semester = db.Column(db.Integer,nullable=False)

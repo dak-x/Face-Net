@@ -2,13 +2,13 @@ import secrets
 import sqlite3
 from PIL import Image
 import os
-from attendance.models import User, Attendance_Entry, takes
+from attendance.models import TimeTable, User, Attendance_Entry, takes
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
 from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm
 from attendance import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
-from datetime import datetime,date
+from datetime import datetime,date, timedelta
 from attendance.camera import camera_stream, authenticate
 
 @app.route("/")
@@ -138,16 +138,39 @@ def getattendance():
 	# add logic to get attendance
 	user_id = request.args.get('user_id')
 	course_id = request.args.get('course_id')
-    # TODO: Add approriete args from the request form.
+    # TODO: Get the DateTime objects
+	#  from the request form.
 	date_upper = request.args.get('date_upper')
 	date_lower = request.args.get('date_lower')
 
 	records = db.Query(Attendance_Entry).filter(Attendance_Entry.User_ID==user_id, Attendance_Entry.Course_ID==course_id, Attendance_Entry.Date <= date_upper, Attendance_Entry.Date >= date_lower)
 
-    # List<>
-    # Get the list for days attended.
+	slots = list(db.Query(TimeTable).filter(TimeTable.Course_ID==course_id))
 
-	return "Attendance for the course"
+	result = dict()
+
+	curr = date_lower
+	while(curr <= date_upper):
+		class_happens = False
+		
+		for slot in slots:
+			if(slot.Day == curr.weekday()):
+				st_time = slot.Start_Time
+				end_time = slot.End_Time
+				class_happens = True
+				result[curr.day] = False
+				break
+		
+
+		if(class_happens):
+			for atten in records:
+				if(atten.Date.time() <= end_time and atten.Date.time() >= st_time ):
+					result[curr.day] = True
+		
+		curr += timedelta(day=1)
+
+		return result
+
 
 @app.route('/getregisteredstudents')
 # returns the list of students in the course
