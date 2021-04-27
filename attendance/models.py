@@ -8,7 +8,7 @@ def load_user(user_id):
 	return User.query.get(int(user_id))
 
 class User(db.Model, UserMixin):
-	id = db.Column(db.Integer, primary_key=True)
+	id = db.Column(db.Integer, primary_key=True) #primary key
 	username = db.Column(db.String(20), unique=True, nullable=False)
 	email = db.Column(db.String(120), unique=True, nullable=False)
 	password = db.Column(db.String(60), nullable=False)
@@ -18,7 +18,7 @@ class User(db.Model, UserMixin):
 
 
 class Staff(db.Model):
-    Emp_ID = db.Column(db.String(20),nullable=False,primary_key=True)
+    Emp_ID = db.Column(db.String(20),nullable=False,primary_key=True) #primary key
     Name = db.Column(db.String(60),nullable=False)
     Phone = db.Column(db.String(10),nullable=False)
     Email = db.Column(db.String(30),nullable=False)
@@ -29,7 +29,7 @@ class Staff(db.Model):
 
 
 class Student(db.Model):
-    Stud_ID = db.Column(db.String(20),nullable=False, primary_key=True)
+    Stud_ID = db.Column(db.String(20),nullable=False, primary_key=True) #primary key
     Name = db.Column(db.String(60),nullable=False)
     DOB = db.Column(db.DateTime,nullable=False)
     Email = db.Column(db.String(30),nullable=False)
@@ -41,7 +41,7 @@ class Student(db.Model):
 
 
 class Faculty(db.Model):
-    Faculty_ID = db.Column(db.String(20),nullable=False,primary_key=True)
+    Faculty_ID = db.Column(db.String(20),nullable=False,primary_key=True) #primary key
     Name = db.Column(db.String(60),nullable=False)
     Role = db.Column(db.String(40),nullable=False)
     E_Mail = db.Column(db.String(30),nullable=False)
@@ -51,42 +51,42 @@ class Faculty(db.Model):
 
 
 class Department(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) #primary key
     Dept_ID = db.Column(db.String(20),nullable=False)
     Name = db.Column(db.String(60),nullable=False)
 
 
 class Course(db.Model):
-    Course_ID = db.Column(db.String(10),nullable=False, primary_key=True)
+    Course_ID = db.Column(db.String(10),nullable=False, primary_key=True) #primary key
     Name = db.Column(db.String(60),nullable=False)
     Semester = db.Column(db.Integer,nullable=False)
     Credit_Hour = db.Column(db.Integer,nullable=False)
 
 class Employee_Attendance(db.Model):
-	id= db.Column(db.Integer, primary_key=True)
+	id= db.Column(db.Integer, primary_key=True) #primary key
 	Emp_ID = db.Column(db.String(20),nullable=False)
-	timein = db.Column(db.DateTime,nullable=False)
-	timeout = db.Column(db.DateTime,nullable=False)
+	timein = db.Column(db.DateTime,nullable=False) #time in of faculty
+	timeout = db.Column(db.DateTime,nullable=False) #time out of faculty
 
 class Attendance_Entry(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
+	id = db.Column(db.Integer, primary_key=True) #primary key
 	Course_ID = db.Column(db.String(10),nullable=False)
 	Date = db.Column(db.DateTime,nullable=False)
 	Semester = db.Column(db.Integer,nullable=False)
 	User_ID = db.Column(db.String(20),nullable=False)
 
 class takes(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
+	id = db.Column(db.Integer, primary_key=True) #primary key
 	Course_ID = db.Column(db.String(10),nullable=False)
 	User_ID = db.Column(db.String(20),nullable=False)
 
 class Teaches(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) #primary key
     Faculty_ID = db.Column(db.String(20),nullable=False)
     Course_ID = db.Column(db.String(10),nullable=False)
 
 class TimeTable(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) #primary key
     Course_ID = db.Column(db.String(10),nullable=False)
     # 0-Sunday, 1-Monday , .... 6-Saturday
     Day = db.Column(db.Integer,nullable=False)

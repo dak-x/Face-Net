@@ -11,7 +11,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime,date, timedelta
 from attendance.camera import camera_stream, authenticate
 
-@app.route("/")
+@app.route("/") #index
 @app.route("/home")
 def home():
 	return render_template('dashboard.html')
