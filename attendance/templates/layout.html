@@ -11,7 +11,7 @@
       <title>Attendance Management System</title>
     {% endif %}
   </head>
-  <body style="background-image: url('static/img/bg3.jpg');background-size: cover">
+  <body style="background-image: url('static/img/bg1.jpg');background-size: cover">
     <div class="navbar navbar-expand-sm bg-dark navbar-dark">
       <div class="container">
         <a class="navbar-brand" href="/">Attendance Management System</a>
@@ -30,11 +30,13 @@
       </div>
     </div>
 
-    <div style="width: 600px;
-  border: 2px solid black;
-  box-shadow: 10px 10px 5px black;
-  padding: 50px;
-  margin: 20px;background-image: url('static/img/formbg.png')">
+    <div style="width:40%;
+    /* border: 2px solid black;
+    box-shadow: 10px 10px 5px black; */
+    padding: 50px;
+    margin: 20px;margin-left:30%;margin-top:5%;
+       /* background-image: url('static/img/formbg.png'); */
+       ">
       {% with messages=get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
