@@ -2,7 +2,7 @@ import secrets
 import sqlite3
 from PIL import Image
 import os
-from attendance.models import TimeTable, User, Attendance_Entry, takes
+from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
 from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm
@@ -14,7 +14,13 @@ from attendance.camera import camera_stream, authenticate
 @app.route("/") #index
 @app.route("/home")
 def home():
-	return render_template('dashboard.html')
+	if(current_user.is_authenticated and current_user.username[0] == 'F'):
+		return "Faculty dashboard"
+	elif(current_user.is_authenticated):
+		student_data = Student.query.filter_by(Stud_ID = current_user.username).first()
+		return render_template('dashboard.html', student_data = student_data)
+	else:
+		return redirect(url_for('login'))
 
 
 @app.route("/register",methods=["GET","POST"])

@@ -1,4 +1,4 @@
-from attendance.models import TimeTable, Attendance_Entry
+from attendance.models import TimeTable, Attendance_Entry, Student
 from attendance import db
 import datetime
 
@@ -57,5 +57,9 @@ d1 = datetime.datetime(year=2021, month=4, day=21, hour=9, minute=5)
 a1 = Attendance_Entry(Course_ID = "CSL333", User_ID="2018UCS0065", Semester=6, Date = d1)
 # db.session.add(a1)
 # db.session.commit()
-print(datetime.datetime.utcnow().weekday())
-print(getattendance())
+# print(datetime.datetime.utcnow().weekday())
+# print(getattendance())
+
+s1 = Student(Stud_ID = "2018UCS0065", Name="Samarth", DOB=d1, Email="samarth@gmail.com", Phone="9191919191", Gender="M",Semester=6, Dept_ID="CS", Path="somepath" )
+db.session.add(s1)
+db.session.commit()
