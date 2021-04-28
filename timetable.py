@@ -35,33 +35,39 @@ import datetime
 import attendance, attendance.models
 
 
-dummy_date = datetime.date.today()
 
-entries = []
-for day in timeTable:
-    courses_curr = timeTable[day]
-    for course in courses_curr:
+def populate_timetable():
+    dummy_date = datetime.date.today()
 
-        h1,m1 = map(int,courses_curr[course][0].split(":"))
-        h2,m2 = map(int,courses_curr[course][1].split(":"))
+    entries = []
+    for day in timeTable:
+        courses_curr = timeTable[day]
+        for course in courses_curr:
 
-        start = datetime.time(hour=h1,minute=m1)
-        end = datetime.time(hour=h2,minute=m2)
-        st_date = datetime.datetime.combine(dummy_date,start)
-        en_date = datetime.datetime.combine(dummy_date,end)
+            h1,m1 = map(int,courses_curr[course][0].split(":"))
+            h2,m2 = map(int,courses_curr[course][1].split(":"))
 
-        ob = attendance.models.TimeTable(Course_ID = course, Day=day,Start_Time = st_date, End_Time=en_date,Semester=6)
-        # ob.Course_ID = course
-        # ob.Day = day
-        # ob.Start_Time = st_date
-        # ob.End_Time = en_date
-        # ob.Semester = 6
-        print(ob.Course_ID)
-        entries.append(ob)
+            start = datetime.time(hour=h1,minute=m1)
+            end = datetime.time(hour=h2,minute=m2)
+            st_date = datetime.datetime.combine(dummy_date,start)
+            en_date = datetime.datetime.combine(dummy_date,end)
 
-# attendance.db.session.add_all(entries)
+            ob = attendance.models.TimeTable(Course_ID = course, Day=day,Start_Time = st_date, End_Time=en_date,Semester=6)
+            # ob.Course_ID = course
+            # ob.Day = day
+            # ob.Start_Time = st_date
+            # ob.End_Time = en_date
+            # ob.Semester = 6
+            print(ob.Course_ID)
+            entries.append(ob)
+
+    attendance.db.session.add_all(entries)
 # commit using this.
-# attendance.db.session.commit()
+    attendance.db.session.commit()
 
 
-t1 = attendance.models.TimeTable(Course_ID = "CSL333", Day= 1, Semester=6, Start_Time = st_date, End_Time = en_date)
+# t1 = attendance.models.TimeTable(Course_ID = "CSL333", Day= 1, Semester=6, Start_Time = st_date, End_Time = en_date)
+# populate_timetable()
+check = attendance.models.TimeTable.query.all()
+for records in check:
+    print(records.Course_ID, records.Day, records.Start_Time, records.End_Time )
