@@ -185,7 +185,12 @@
                 <!-- Card Body -->                
                 <div class="card shadow mb-4">
                   <h2>LIST OF STUDENTS </h2>
-                </div>                
+                </div>
+                {% for student in reg_students %}  
+                <div class="card shadow mb-4">
+                  <h6> {{ student }} </h6>
+                </div>  
+                {% endfor %}          
               </div>
             </div>
 

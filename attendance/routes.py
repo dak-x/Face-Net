@@ -17,6 +17,12 @@ from attendance.camera import camera_stream, authenticate
 import json
 
 
+def getregisteredstudents(course_id):
+	student_list = takes.query.filter_by(Course_ID=course_id).all()
+	student_list = [x.User_ID for x in student_list]
+
+	return student_list
+
 def get_course_wise(date_lower, date_upper, user_id, course_id):
 	records = Attendance_Entry.query.filter(Attendance_Entry.User_ID==user_id, Attendance_Entry.Course_ID==course_id, Attendance_Entry.Date <= date_upper, Attendance_Entry.Date >= date_lower)
 	slots = TimeTable.query.filter(TimeTable.Course_ID==course_id)
@@ -199,15 +205,9 @@ def getattendance():
 	return render_template("filter_attendance.html", form = form)
 
 
-@app.route('/getregisteredstudents')
-# returns the list of students in the course
-def getregisteredstudents():
-	course_id = request.args.get('course_id')
-	student_list = takes.query.filter_by(Course_ID=course_id).all()
-	student_list = [x.User_ID for x in student_list]
+# @app.route('/getregisteredstudents')
+# # returns the list of students in the course
 
-	print(student_list)
-	return render_template('registered_students.html',student_list = student_list)
 
 def gen_frame():
     """Video streaming generator function."""
@@ -234,4 +234,5 @@ def course():
 	c_id = request.args.get('course_id')
 	faculty_id = request.args.get('faculty_id')
 	name = request.args.get('faculty_name')
-	return render_template('course.html',c_id = c_id, f_id = faculty_id, name = name)
+	reg_students = getregisteredstudents(c_id)
+	return render_template('course.html',c_id = c_id, f_id = faculty_id, name = name, reg_students = reg_students)
