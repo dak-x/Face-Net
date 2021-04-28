@@ -5,11 +5,7 @@ import os
 from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
-<<<<<<< HEAD
-from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm, Add_Attendance_Widget_Form
-=======
-from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm, FindDate
->>>>>>> 7feff037918ef28d6d2435b3d9514df8328f0213
+from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm, Add_Attendance_Widget_Form, FindDate
 from attendance import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime,date, timedelta
@@ -52,8 +48,10 @@ def home():
 		return "Faculty dashboard"
 	elif(current_user.is_authenticated):
 		student_data = Student.query.filter_by(Stud_ID = current_user.username).first()
-		atten_data = {"CSL333":75, "CSL362":90, "MTL146":45, "CSL380":50}
-		return render_template('dashboard.html', student_data = student_data, jsonfile = json.dumps(atten_data))
+		bar_data = {"CSL333":75, "CSL362":90, "MTL146":45, "CSL380":50}
+		pie_data = {"Attended":70, "Not Attended":30}
+		plot_data = {"bar":bar_data, "pie":pie_data}
+		return render_template('dashboard.html', student_data = student_data, jsonfile = json.dumps(plot_data))
 	else:
 		return redirect(url_for('login'))
 
@@ -164,7 +162,7 @@ def addattendance():
 	else:
 		# todo add extra page with prompt to go back
 		# return NOT Authenticate
-		return redirect(url_for('markattendance'))
+		return "Failed"
 
 
 @app.route('/getcourses')
