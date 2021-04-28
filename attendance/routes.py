@@ -238,7 +238,8 @@ def faculty_home():
 		faculty_id = current_user.username
 		faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
 		course_teaches = Teaches.query.filter_by(Faculty_ID = faculty_id)
-		return render_template('dashboardf.html', faculty_data=faculty_data, course_teaches = course_teaches)
+		plot_data = {"a":25, "b":75}
+		return render_template('dashboardf.html', faculty_data=faculty_data, course_teaches = course_teaches, jsonfile = json.dumps(plot_data))
 
 @app.route("/course")
 def course():	
@@ -249,4 +250,5 @@ def course():
 	faculty_id = current_user.username
 	faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
 	course_teaches = Teaches.query.filter_by(Faculty_ID = faculty_id)
-	return render_template('course.html',c_id = c_id,faculty_data=faculty_data, course_teaches = course_teaches, f_id = faculty_id, name = name, reg_students = reg_students)
+	plot_data = {"a":25, "b":75}
+	return render_template('course.html',c_id = c_id,faculty_data=faculty_data, course_teaches = course_teaches, f_id = faculty_id, name = name, reg_students = reg_students, jsonfile = json.dumps(plot_data))
