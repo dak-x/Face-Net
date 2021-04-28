@@ -56,8 +56,8 @@ class markattendanceForm(FlaskForm):
     submit = SubmitField('Mark Attendance')
 
 class Add_Attendance_Widget_Form(FlaskForm):
-    submit = SubmitField('Back to home')
-    
+    submit = SubmitField('Back to home')\
+
 class FindDate(FlaskForm):
     start_date = DateField('Start Date(dd/mm/YYYY)', format='%Y-%m-%d', validators=[DataRequired()])
     end_date = DateField(' End Date(dd/mm/YYYY)', format='%Y-%m-%d', validators=[DataRequired()])
