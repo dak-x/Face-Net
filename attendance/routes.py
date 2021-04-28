@@ -17,14 +17,25 @@ from attendance.camera import camera_stream, authenticate
 import json
 
 
+# returning list of (stdent.name, student.entry number)
 def getregisteredstudents(course_id):
 	student_list = takes.query.filter_by(Course_ID=course_id).all()
 	student_list = [x.User_ID for x in student_list]
+	stud_list = []
+	for x in student_list:
+		name = Student.query.filter_by(Stud_ID = x).all()
+		for k in name:
+			print(k.Name)
+			p = (k.Name,x)
+		stud_list.append(p)
 
-	return student_list
+	return stud_list
+
+
 
 def get_course_wise(date_lower, date_upper, user_id, course_id):
 	records = Attendance_Entry.query.filter(Attendance_Entry.User_ID==user_id, Attendance_Entry.Course_ID==course_id, Attendance_Entry.Date <= date_upper, Attendance_Entry.Date >= date_lower)
+	# print([record.Date.day for record in records])
 	slots = TimeTable.query.filter(TimeTable.Course_ID==course_id)
 	result = dict()
 
@@ -37,14 +48,14 @@ def get_course_wise(date_lower, date_upper, user_id, course_id):
 				st_time = slot.Start_Time.time()
 				end_time = slot.End_Time.time()
 				class_happens = True
-				result[curr.day] = False
+				result[curr.strftime("%d-%m-%Y")] = False
 				break
 			
 
-			if(class_happens):
-				for atten in records:
-					if(atten.Date.day == curr.day and  atten.Date.time() <= end_time and atten.Date.time() >= st_time ):
-						result[curr.day] = True
+		if(class_happens):
+			for atten in records:
+				if(atten.Date.day == curr.day and  atten.Date.time() <= end_time and atten.Date.time() >= st_time ):
+					result[curr.strftime("%d-%m-%Y")] = atten.Date.strftime("%H:%M")
 			
 		curr += timedelta(days=1)
 	
@@ -198,10 +209,10 @@ def getattendance():
 		course_id = form.course_id.data
 		date_upper = form.end_date.data
 		date_lower = form.start_date.data
-		print(date_lower, date_upper)
+		# print(date_lower, date_upper)
 		result = get_course_wise(date_lower, date_upper, user_id, course_id)
-		print(result)
-		return "Done"
+		# print(result)
+		return render_template("attended_days.html",result = result)
 	return render_template("filter_attendance.html", form = form)
 
 

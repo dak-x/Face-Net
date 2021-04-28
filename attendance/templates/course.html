@@ -189,7 +189,7 @@
                   <div class="h2 m-lg-2 text-lg-center font-weight-bold text-gray-800"> &nbsp  &nbsp LIST OF REGISTERED STUDENTS</div>
                 </div>                  
                 {% for student in reg_students %}  
-                <div class="h5 m-lg-1 font-weight-bold text-gray-800"> &nbsp  &nbsp {{ loop.index }}.  &nbsp {{ student }}</div>  
+                <div class="h5 m-lg-1 font-weight-bold text-gray-800"> &nbsp  &nbsp {{ loop.index }}.  &nbsp {{ student[0] }} &nbsp:  {{ student[1] }}</div>  
                 <hr class="sidebar-divider my-4">
                 {% endfor %}          
               </div>

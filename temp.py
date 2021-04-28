@@ -61,5 +61,6 @@ a1 = Attendance_Entry(Course_ID = "CSL333", User_ID="2018UCS0065", Semester=6, D
 # print(getattendance())
 
 s1 = Student(Stud_ID = "2018UCS0065", Name="Samarth", DOB=d1, Email="samarth@gmail.com", Phone="9191919191", Gender="M",Semester=6, Dept_ID="CS", Path="somepath" )
-db.session.add(s1)
+s2 = Student(Stud_ID = "2018UCS0066", Name="Bakshi", DOB=d1, Email="Bakshi@gmail.com", Phone="9191919191", Gender="M",Semester=6, Dept_ID="CS", Path="somepath" )
+db.session.add(s2)
 db.session.commit()
