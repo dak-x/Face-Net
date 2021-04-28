@@ -61,13 +61,47 @@ def populate_timetable():
             print(ob.Course_ID)
             entries.append(ob)
 
-    attendance.db.session.add_all(entries)
+    # attendance.db.session.add_all(entries)
 # commit using this.
-    attendance.db.session.commit()
+    # attendance.db.session.commit()
 
 
 # t1 = attendance.models.TimeTable(Course_ID = "CSL333", Day= 1, Semester=6, Start_Time = st_date, End_Time = en_date)
 # populate_timetable()
-check = attendance.models.TimeTable.query.all()
-for records in check:
-    print(records.Course_ID, records.Day, records.Start_Time, records.End_Time ,records.Semester)
+# check = attendance.models.TimeTable.query.all()
+# for records in check:
+    # print(records.Course_ID, records.Day, records.Start_Time, records.End_Time ,records.Semester)
+
+import random 
+
+# Give entry number and course_list. 
+# Auto fetch details form timetable and generate entries.
+def populate_attendance(entry_no, course_list):
+    
+    entries = []
+
+    date = datetime.datetime.today()
+
+    # populate for a month starting from today
+    for i in range(30):
+        shifted_date = date + datetime.timedelta(days=i)
+        entry_date = shifted_date.date()
+        weekday = entry_date.weekday()
+
+        for course in timeTable[weekday]:
+            if(course in course_list):
+                x = random.uniform(0,1)
+                #mark the attendance
+                if( x < 0.75 ):
+                    h,m = map(int, timeTable[weekday][course][0].split(":"))
+                    t = datetime.time(hour=h,minute=m)
+                    entry_date = datetime.datetime.combine(entry_date,t)
+                    
+                    ob = attendance.models.Attendance_Entry(Course_ID = course, Date=entry_date,Semester=6,User_ID=entry_no)
+
+                    entries.append(ob)
+
+    # Use this to commit.
+    # attendance.db.session.add_all(entries)
+
+# populate_attendance("2018UCS0065",["CSL352","CSL331","HUL211"])
