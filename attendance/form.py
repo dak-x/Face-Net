@@ -54,3 +54,6 @@ class markattendanceForm(FlaskForm):
     entry_number = StringField('Entry Number', validators=[DataRequired()])
     course_id = StringField('Course ID', validators=[DataRequired()])
     submit = SubmitField('Mark Attendance')
+
+class Add_Attendance_Widget_Form(FlaskForm):
+    submit = SubmitField('Back to home')

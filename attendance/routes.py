@@ -5,7 +5,7 @@ import os
 from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
-from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm
+from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm, Add_Attendance_Widget_Form
 from attendance import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime,date, timedelta
@@ -116,16 +116,19 @@ def addattendance():
 	user_id = request.args.get('user_id')
 	course_id = request.args.get('course_id')
 	is_true = authenticate(user_id)
+	form = Add_Attendance_Widget_Form()
 	if(is_true):
 		attendance_entry = Attendance_Entry(Course_ID=course_id, User_ID=user_id,Date=datetime.now(),Semester=6)
 		print(attendance_entry.Date.strftime("%m/%d/%Y, %H:%M:%S"))
 		db.session.add(attendance_entry)
 		db.session.commit()
 		# todo add new page instead
-		return "Success"
+		return render_template('attendance_added.html',form=form)
 	else:
 		# todo add extra page with prompt to go back
-		return "Not authenticated"
+		# return NOT Authenticate
+		return redirect(url_for('markattendance'))
+
 
 @app.route('/getcourses')
 def getcourses():
