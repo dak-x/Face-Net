@@ -166,7 +166,8 @@ def addattendance():
 	else:
 		# todo add extra page with prompt to go back
 		# return NOT Authenticate
-		return "Failed"
+		# return "Failed"
+		return render_template('authentication_falied.html',form=form)
 
 
 @app.route('/getcourses')

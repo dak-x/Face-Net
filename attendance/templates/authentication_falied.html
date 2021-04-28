@@ -5,7 +5,7 @@
   <form action="" method="POST">
     {{ form.hidden_tag() }}
     <fieldset class="form-group">
-      <legend class="border-bottom mb-4">Attendance Marked Successfully</legend>
+      <legend class="border-bottom mb-4">Authentication Failed. Try Again..!!</legend>
 
     </fieldset>
 
@@ -14,7 +14,7 @@
     </div> -->
 
     <small class="ml-2">
-      <a class="text-muted" href="{{ url_for('home') }}">Back To Dashboard</a>
+      <a class="text-muted" href="{{ url_for('markattendance') }}">Back To Mark Attendance</a>
     </small>
     
     <!-- <div class="border-top pt-3">
