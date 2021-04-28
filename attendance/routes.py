@@ -5,12 +5,41 @@ import os
 from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
-from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm
+from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm, FindDate
 from attendance import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime,date, timedelta
 from attendance.camera import camera_stream, authenticate
 import json
+
+
+def get_course_wise(date_lower, date_upper, user_id, course_id):
+	records = Attendance_Entry.query.filter(Attendance_Entry.User_ID==user_id, Attendance_Entry.Course_ID==course_id, Attendance_Entry.Date <= date_upper, Attendance_Entry.Date >= date_lower)
+	slots = TimeTable.query.filter(TimeTable.Course_ID==course_id)
+	result = dict()
+
+	curr = date_lower
+	while(curr <= date_upper):
+		class_happens = False
+			
+		for slot in slots:
+			if(slot.Day == curr.weekday()):
+				st_time = slot.Start_Time.time()
+				end_time = slot.End_Time.time()
+				class_happens = True
+				result[curr.day] = False
+				break
+			
+
+			if(class_happens):
+				for atten in records:
+					if(atten.Date.day == curr.day and  atten.Date.time() <= end_time and atten.Date.time() >= st_time ):
+						result[curr.day] = True
+			
+		curr += timedelta(days=1)
+	
+	return result
+
 
 @app.route("/") #index
 @app.route("/home")
@@ -140,44 +169,22 @@ def getcourses():
 	# send course list as a parameter
 	return "Course List"
 
-@app.route('/getattendance')
+@app.route('/getattendance', methods=["GET","POST"])
+@login_required
 # get attendance corresponding to the courseID
 def getattendance():
 	# add logic to get attendance
 	user_id = request.args.get('user_id')
-	course_id = request.args.get('course_id')
-    # TODO: Get the DateTime objects
-	#  from the request form.
-	date_upper = request.args.get('date_upper')
-	date_lower = request.args.get('date_lower')
-
-	records = Attendance_Entry.query.filter(Attendance_Entry.User_ID==user_id, Attendance_Entry.Course_ID==course_id, Attendance_Entry.Date <= date_upper, Attendance_Entry.Date >= date_lower)
-
-	slots = TimeTable.query.filter(TimeTable.Course_ID==course_id)
-
-	result = dict()
-
-	curr = date_lower
-	while(curr <= date_upper):
-		class_happens = False
-		
-		for slot in slots:
-			if(slot.Day == curr.weekday()):
-				st_time = slot.Start_Time.time()
-				end_time = slot.End_Time.time()
-				class_happens = True
-				result[curr.day] = False
-				break
-		
-
-		if(class_happens):
-			for atten in records:
-				if(atten.Date.day == curr.day and  atten.Date.time() <= end_time and atten.Date.time() >= st_time ):
-					result[curr.day] = True
-		
-		curr += timedelta(days=1)
-
-	return result
+	form = FindDate()
+	if form.validate_on_submit():
+		course_id = form.course_id.data
+		date_upper = form.end_date.data
+		date_lower = form.start_date.data
+		print(date_lower, date_upper)
+		result = get_course_wise(date_lower, date_upper, user_id, course_id)
+		print(result)
+		return "Done"
+	return render_template("filter_attendance.html", form = form)
 
 
 @app.route('/getregisteredstudents')
