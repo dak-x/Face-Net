@@ -170,6 +170,11 @@
 
             <!-- Nav Item - Search Dropdown (Visible Only XS) -->
             <li class="nav-item btn-outline-dark">
+              <a class="nav-link button" href="{{ url_for('home') }}" id="searchDropdown">
+                STUDENT
+              </a>              
+            </li> 
+            <li class="nav-item btn-outline-dark">
               <a class="nav-link button" href="{{ url_for('faculty_home') }}" id="searchDropdown">
                 FACULTY
               </a>              
@@ -290,17 +295,10 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-<<<<<<< HEAD
-                <a class="dropdown-item" href="{{ url_for('account') }}">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>                
-=======
                 <a class="dropdown-item" href="{{ url_for ('account') }}">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile
                 </a>
->>>>>>> 86589ed22c8fb6493dde86362d8b1b96ebc9f7a3
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="{{ url_for('logout') }}" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
