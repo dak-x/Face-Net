@@ -179,7 +179,7 @@ def getcourses():
 	
 	# add webpage to show all registered courses, 
 	# send course list as a parameter
-	return "Course List"
+	return render_template('getcourses.html',course_list = course_list)
 
 @app.route('/getattendance', methods=["GET","POST"])
 @login_required

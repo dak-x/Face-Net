@@ -70,4 +70,4 @@ def populate_timetable():
 # populate_timetable()
 check = attendance.models.TimeTable.query.all()
 for records in check:
-    print(records.Course_ID, records.Day, records.Start_Time, records.End_Time )
+    print(records.Course_ID, records.Day, records.Start_Time, records.End_Time ,records.Semester)
