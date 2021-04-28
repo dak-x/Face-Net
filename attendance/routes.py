@@ -226,17 +226,9 @@ def video_feed():
 def faculty_home():
 		faculty_id = current_user.username
 		faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
-		course_teaches = Teaches.query.filter_by(Faculty = faculty_id)
+		course_teaches = Teaches.query.filter_by(Faculty_ID = faculty_id)
 		return render_template('dashboardf.html', faculty_data=faculty_data, course_teaches = course_teaches)
 
-@app.route("/course1")
-def course1():
-		return render_template('course1.html')
-
-@app.route("/course2")
-def course2():
-		return render_template('course2.html')
-
-@app.route("/course3")
-def course3():
-		return render_template('course3.html')
+@app.route("/course")
+def course(c_id, faculty_id, name):		
+		return render_template('course.html',c_id = c_id, f_id = faculty_id, name = name)

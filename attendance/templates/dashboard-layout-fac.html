@@ -60,11 +60,11 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <!-- Nav Item - Tables -->
-      {% for i in (faculty_list) %}
+      {% for i in (course_teaches) %}
       <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('course1') }}">
+        <a class="nav-link" href="{{ url_for('course', course_id = i.Course_ID, faculty_id = i.Faculty_ID, faculty_name = faculty_data.Name) }}">
           <i class="fas fa-fw fa-book"></i>
-          <span>{{i[1]}}: {{i[2]}}</span></a>
+          <span>{{i.Course_ID}}</span></a>
       </li>
       {% endfor %}   
       <!-- Nav Item - Tables -->
