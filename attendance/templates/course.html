@@ -103,15 +103,15 @@
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Attendance Overview of Registered Students</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">PERCENTAGE ATTENDANCE OF REGISTERED STUDENTS</h6>
                   
                 </div>
                 <!-- Card Body -->                
                 <div class="card">                  
-                  <div class="h2 m-lg-2 text-lg-center font-weight-bold text-gray-800"> &nbsp  &nbsp LIST OF REGISTERED STUDENTS</div>
+                  <div class="h2 m-lg-2 text-lg-center font-weight-bold text-gray-800"> &nbsp  &nbsp PERCENTAGE ATTENDANCE OF REGISTERED STUDENTS</div>
                 </div>                  
                 {% for student in reg_students %}  
-                <div class="h5 m-lg-1 font-weight-bold text-gray-800"> &nbsp  &nbsp {{ loop.index }}.  &nbsp {{ student[0] }} &nbsp:  {{ student[1] }}</div>  
+                <div class="h5 m-lg-1 font-weight-bold text-gray-800"> &nbsp  &nbsp {{ loop.index }}.  &nbsp {{ student[0] }} &nbsp  ( {{ student[1] }} ) &nbsp:  {{ student[2] }} %</div>  
                 <hr class="sidebar-divider my-4">
                 {% endfor %}          
               </div>
