@@ -36,7 +36,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Student ID</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">2018UXX0067</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ student_data.Stud_ID }}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-barcode fa-2x text-gray-300"></i>
@@ -55,7 +55,7 @@
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Department</div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Computer Science and Engineering</div>
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{  student_data.Dept_ID }}</div>
                         </div>                        
                       </div>
                     </div>
@@ -74,7 +74,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Semester</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">VI</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ student_data.Semester }}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-bookmark fa-2x text-gray-300"></i>
