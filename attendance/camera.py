@@ -17,6 +17,7 @@ import numpy as np
 #             new_face_names.append(face_name)
 # known_face_encodings = new_face_encodings
 # known_face_names = new_face_names
+# global video_capture
 video_capture = cv2.VideoCapture(0)  # 0 for web camera live stream
 #  for cctv camera'rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp'
 #  example of cctv or rtsp: 'rtsp://mamun:123456@101.134.16.117:554/user=mamun_password=123456_channel=1_stream=0.sdp'
@@ -28,9 +29,17 @@ def authenticate(userID):
     except:
         test = face_recognition.load_image_file(os.path.join('attendance/datasets',userID+".jpg"))
     try:
+        # video_capture = cv2.VideoCapture(0)
+        # cv2.destroyAllWindows()
+        # video_capture.release(0)
+        # video_capture = cv2.VideoCapture(0) 
         test_encoding = face_recognition.face_encodings(test)[0]
         test_face_encodings.append(test_encoding)
+        print("*****************************************************************************************")
+        print(test.shape)
         ret, frame = video_capture.read()
+        print("*****************************************************************************************")
+        print(frame.shape)
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         rgb_small_frame = small_frame[:, :, ::-1]
         face_locations = face_recognition.face_locations(rgb_small_frame)
@@ -39,24 +48,31 @@ def authenticate(userID):
         face_distances = face_recognition.face_distance(test_face_encodings, face_encoding)
         if (min(face_distances) > 0.4):
             print(min(face_distances))
+            video_capture.release()
             return False
         else:
             print(min(face_distances))
+            video_capture.release()
             return True
+
     except Exception as e:
         print(e)
-        return authenticate(userID)
+        # return authenticate(userID)
 
+# video_capture = cv2.VideoCapture(0) 
 
 def camera_stream():
     face_locations = []
     face_encodings = []
     face_names = []
     process_this_frame = True
+    # global video_capture
+    # video_capture = cv2.VideoCapture(0) 
     while True:
         # Capture frame-by-frame
         ret, frame = video_capture.read()
-
+        print("*****************************************************************************************")
+        print(frame.shape)
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
         rgb_small_frame = small_frame[:, :, ::-1]
@@ -81,3 +97,5 @@ def camera_stream():
         return cv2.imencode('.jpg', frame)[1].tobytes()
 
 
+# video_capture.release()
+# cv2.destroyAllWindows()
