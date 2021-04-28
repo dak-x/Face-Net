@@ -17,16 +17,81 @@ from attendance.camera import camera_stream, authenticate
 import json
 
 
+def get_breakup(course_id):
+	stude_list = getregisteredstudents(course_id)
+	d = {"0-70":0,"70-80":0,"80-90":0,"90+":0}
+	for (_,_,attendance) in stude_list:
+		if(attendance<70):
+			d["0-70"] = d.get("0-70",0) + 1
+		elif(attendance<80):
+			d["70-80"] = d.get("70-80",0) + 1
+		elif(attendance<90):
+			d["80-90"] = d.get("80-90",0) + 1
+		else:
+			d["90+"] = d.get("90+",0) + 1
+	for key in d:
+		d[key] = round((d[key]/len(stude_list))*100	,2)
+	return d
+
+def get_faculty_attendace_percent(faculty_id):
+    # first get the courses.
+    # then get the course attendance
+    # then just simply put everything in a dictionary
+	course_list = Teaches.query.filter_by(Faculty_ID=faculty_id)
+	course_list = [x.Course_ID for x in course_list]
+	sem_start = datetime(year=2021, month=1, day=1, hour=0, minute=0)
+	sem_end = sem_start + timedelta(days=115)
+	res = {}
+	tot_classes=0
+	attended_classes = 0
+	for course in course_list:
+		R = get_course_wise(sem_start,sem_end,faculty_id,course)
+		cnt = 0.0
+		for k in R:
+			if(R[k] != False):
+				attended_classes += 1
+				tot_classes += 1
+				cnt += 1.0
+			else:
+				tot_classes += 1
+		res[course] = round(cnt / len(R) * 100, 2)
+	return res, round((attended_classes/tot_classes)*100, 2)
+
+def get_student_attendace_percent(student_id):
+    # first get the courses.
+    # then get the course attendance
+    # then just simply put everything in a dictionary
+	course_list = takes.query.filter_by(User_ID=student_id)
+	course_list = [x.Course_ID for x in course_list]
+	sem_start = datetime(year=2021, month=1, day=1, hour=0, minute=0)
+	sem_end = sem_start + timedelta(days=115)
+	res = {}
+	tot_classes=0
+	attended_classes = 0
+	for course in course_list:
+		R = get_course_wise(sem_start,sem_end,student_id,course)
+		cnt = 0.0
+		for k in R:
+			if(R[k] != False):
+				attended_classes += 1
+				tot_classes += 1
+				cnt += 1.0
+			else:
+				tot_classes += 1
+		res[course] = round(cnt / len(R) * 100, 2)
+	return res, round((attended_classes/tot_classes)*100, 2)
+
 # returning list of (stdent.name, student.entry number)
 def getregisteredstudents(course_id):
 	student_list = takes.query.filter_by(Course_ID=course_id).all()
 	student_list = [x.User_ID for x in student_list]
 	stud_list = []
 	for x in student_list:
+		attendance_percent, _ = get_student_attendace_percent(x)
 		name = Student.query.filter_by(Stud_ID = x).all()
 		for k in name:
 			print(k.Name)
-			p = (k.Name,x)
+			p = (k.Name,x,attendance_percent[course_id])
 		stud_list.append(p)
 
 	return stud_list
@@ -69,8 +134,8 @@ def home():
 		return redirect(url_for('faculty_home'))
 	elif(current_user.is_authenticated):
 		student_data = Student.query.filter_by(Stud_ID = current_user.username).first()
-		bar_data = {"CSL333":75, "CSL362":90, "MTL146":45, "CSL380":50}
-		pie_data = {"Attended":70, "Not Attended":30}
+		bar_data, percentage = get_student_attendace_percent(current_user.username)
+		pie_data = {"Attended":percentage, "Not Attended":100 - percentage}
 		plot_data = {"bar":bar_data, "pie":pie_data}
 		return render_template('dashboard.html', student_data = student_data, jsonfile = json.dumps(plot_data))
 	else:
@@ -236,6 +301,9 @@ def video_feed():
 @app.route("/faculty")
 def faculty_home():
 		faculty_id = current_user.username
+		bar_data, percentage = get_faculty_attendace_percent(current_user.username)
+		pie_data = {"Attended":percentage, "Not Attended":100 - percentage}
+		plot_data = {"bar":bar_data, "pie":pie_data}
 		faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
 		course_teaches = Teaches.query.filter_by(Faculty_ID = faculty_id)
 		plot_data = {"a":25, "b":75}
