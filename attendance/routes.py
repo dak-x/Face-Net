@@ -17,6 +17,22 @@ from attendance.camera import camera_stream, authenticate
 import json
 
 
+def get_breakup(course_id):
+	stude_list = getregisteredstudents(course_id)
+	d = {"0-70":0,"70-80":0,"80-90":0,"90+":0}
+	for (_,_,attendance) in stude_list:
+		if(attendance<70):
+			d["0-70"] = d.get("0-70",0) + 1
+		elif(attendance<80):
+			d["70-80"] = d.get("70-80",0) + 1
+		elif(attendance<90):
+			d["80-90"] = d.get("80-90",0) + 1
+		else:
+			d["90+"] = d.get("90+",0) + 1
+	for key in d:
+		d[key] = round((d[key]/len(stude_list))*100	,2)
+	return d
+
 def get_faculty_attendace_percent(faculty_id):
     # first get the courses.
     # then get the course attendance
@@ -71,10 +87,11 @@ def getregisteredstudents(course_id):
 	student_list = [x.User_ID for x in student_list]
 	stud_list = []
 	for x in student_list:
+		attendance_percent, _ = get_student_attendace_percent(x)
 		name = Student.query.filter_by(Stud_ID = x).all()
 		for k in name:
 			print(k.Name)
-			p = (k.Name,x)
+			p = (k.Name,x,attendance_percent[course_id])
 		stud_list.append(p)
 
 	return stud_list
@@ -300,4 +317,6 @@ def course():
 	faculty_id = current_user.username
 	faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
 	course_teaches = Teaches.query.filter_by(Faculty_ID = faculty_id)
-	return render_template('course.html',c_id = c_id,faculty_data=faculty_data, course_teaches = course_teaches, f_id = faculty_id, name = name, reg_students = reg_students)
+	pie_data = get_breakup(c_id)
+	# print(pie_data)
+	return render_template('course.html',c_id = c_id,faculty_data=faculty_data, course_teaches = course_teaches, f_id = faculty_id, name = name, reg_students = reg_students, pie_data = pie_data)
