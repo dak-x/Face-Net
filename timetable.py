@@ -92,7 +92,7 @@ def populate_attendance(entry_no, course_list):
                 if(course in course_list):
                     x = random.uniform(0,1)
                     #mark the attendance
-                    if( x < 0.75 ):
+                    if( x < 0.9 ):
                         h,m = map(int, timeTable[str(weekday)][course][0].split(":"))
                         t = datetime.time(hour=h,minute=m)
                         entry_date = datetime.datetime.combine(entry_date,t)
@@ -105,9 +105,11 @@ def populate_attendance(entry_no, course_list):
     attendance.db.session.add_all(entries)
     attendance.db.session.commit()
 
-populate_attendance("2018UCS0065",["CSL733", "CSL331", "CSL380","HUL211", "CSL362"])
-populate_attendance("2018UCS0067",["CSL733","MTL146","CSL380","CSL362","HUL211"])
-populate_attendance("2018UCS0068",["HUL211","MTL146","CSL380","CSL362"])
-populate_attendance("2018UCS0064",["CSL331","CSL733","CSL380","CSL362","CSL352"])
-populate_attendance("2018UCS0061",["CSL352","CSL733","HUL211","CSL362","MTL146"])
+# populate_attendance("2018UCS0065",["CSL733", "CSL331", "CSL380","HUL211", "CSL362"])
+# populate_attendance("2018UCS0067",["CSL733","MTL146","CSL380","CSL362","HUL211"])
+# populate_attendance("2018UCS0068",["HUL211","MTL146","CSL380","CSL362"])
+# populate_attendance("2018UCS0064",["CSL331","CSL733","CSL380","CSL362","CSL352"])
+# populate_attendance("2018UCS0061",["CSL352","CSL733","HUL211","CSL362","MTL146"])
 
+# populate_attendance("FC0001",["CSL733","CSL331","CSL380"])
+# populate_attendance("FC0002",["CSL352","CSL362","HUL211","MTL146"])
