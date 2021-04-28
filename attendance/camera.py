@@ -46,18 +46,18 @@ def authenticate(userID):
         face_encoding = face_recognition.face_encodings(rgb_small_frame, face_locations)[0]
 
         face_distances = face_recognition.face_distance(test_face_encodings, face_encoding)
-        if (min(face_distances) > 0.4):
+        if (min(face_distances) > 0.45):
             print(min(face_distances))
-            video_capture.release()
+            #video_capture.release()
             return False
         else:
             print(min(face_distances))
-            video_capture.release()
+            #video_capture.release()
             return True
 
     except Exception as e:
         print(e)
-        # return authenticate(userID)
+        return authenticate(userID)
 
 # video_capture = cv2.VideoCapture(0) 
 
