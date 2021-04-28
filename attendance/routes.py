@@ -12,7 +12,7 @@ from datetime import datetime,date, timedelta
 from attendance.camera import camera_stream, authenticate
 
 @app.route("/") #index
-@app.route("/home")
+@app.route("/home",methods=["GET","POST"])
 def home():
 	if(current_user.is_authenticated and current_user.username[0] == 'F'):
 		return "Faculty dashboard"
@@ -22,6 +22,8 @@ def home():
 	else:
 		return redirect(url_for('login'))
 
+
+	
 
 @app.route("/register",methods=["GET","POST"])
 def register():
@@ -200,3 +202,7 @@ def gen_frame():
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen_frame(),mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route("/faculty")
+def faculty_home():
+		return render_template('dashboardf.html')
