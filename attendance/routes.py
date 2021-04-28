@@ -20,8 +20,15 @@ import json
 def getregisteredstudents(course_id):
 	student_list = takes.query.filter_by(Course_ID=course_id).all()
 	student_list = [x.User_ID for x in student_list]
+	stud_list = []
+	for x in student_list:
+		name = Student.query.filter_by(Stud_ID = x).all()
+		for k in name:
+			print(k.Name)
+			p = (k.Name,x)
+		stud_list.append(p)
 
-	return student_list
+	return stud_list
 
 def get_course_wise(date_lower, date_upper, user_id, course_id):
 	records = Attendance_Entry.query.filter(Attendance_Entry.User_ID==user_id, Attendance_Entry.Course_ID==course_id, Attendance_Entry.Date <= date_upper, Attendance_Entry.Date >= date_lower)
