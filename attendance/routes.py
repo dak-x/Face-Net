@@ -2,7 +2,7 @@ import secrets
 import sqlite3
 from PIL import Image
 import os
-from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty
+from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty, Teaches
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
 
@@ -224,7 +224,10 @@ def video_feed():
 
 @app.route("/faculty")
 def faculty_home():
-		return render_template('dashboardf.html')
+		faculty_id = current_user.username
+		faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
+		course_teaches = Teaches.query.filter_by(Faculty = faculty_id)
+		return render_template('dashboardf.html', faculty_data=faculty_data, course_teaches = course_teaches)
 
 @app.route("/course1")
 def course1():
