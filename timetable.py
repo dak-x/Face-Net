@@ -80,28 +80,34 @@ def populate_attendance(entry_no, course_list):
     
     entries = []
 
-    date = datetime.datetime.today()
+    start_date = datetime.datetime(year=2021, month=1,day=1)
 
     # populate for a month starting from today
-    for i in range(30):
-        shifted_date = date + datetime.timedelta(days=i)
+    for i in range(116):
+        shifted_date = start_date + datetime.timedelta(days=i)
         entry_date = shifted_date.date()
         weekday = entry_date.weekday()
-
-        for course in timeTable[weekday]:
-            if(course in course_list):
-                x = random.uniform(0,1)
-                #mark the attendance
-                if( x < 0.75 ):
-                    h,m = map(int, timeTable[weekday][course][0].split(":"))
-                    t = datetime.time(hour=h,minute=m)
-                    entry_date = datetime.datetime.combine(entry_date,t)
-                    
-                    ob = attendance.models.Attendance_Entry(Course_ID = course, Date=entry_date,Semester=6,User_ID=entry_no)
-
-                    entries.append(ob)
+        if(weekday<5):
+            for course in timeTable[str(weekday)]:
+                if(course in course_list):
+                    x = random.uniform(0,1)
+                    #mark the attendance
+                    if( x < 0.75 ):
+                        h,m = map(int, timeTable[str(weekday)][course][0].split(":"))
+                        t = datetime.time(hour=h,minute=m)
+                        entry_date = datetime.datetime.combine(entry_date,t)
+                        
+                        ob = attendance.models.Attendance_Entry(Course_ID = course, Date=entry_date,Semester=6,User_ID=entry_no)
+                        # print(ob)
+                        entries.append(ob)
 
     # Use this to commit.
-    # attendance.db.session.add_all(entries)
+    attendance.db.session.add_all(entries)
+    attendance.db.session.commit()
 
-# populate_attendance("2018UCS0065",["CSL352","CSL331","HUL211"])
+populate_attendance("2018UCS0065",["CSL733", "CSL331", "CSL380","HUL211", "CSL362"])
+populate_attendance("2018UCS0067",["CSL733","MTL146","CSL380","CSL362","HUL211"])
+populate_attendance("2018UCS0068",["HUL211","MTL146","CSL380","CSL362"])
+populate_attendance("2018UCS0064",["CSL331","CSL733","CSL380","CSL362","CSL352"])
+populate_attendance("2018UCS0061",["CSL352","CSL733","HUL211","CSL362","MTL146"])
+
