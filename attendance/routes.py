@@ -179,7 +179,7 @@ def getcourses():
 	
 	# add webpage to show all registered courses, 
 	# send course list as a parameter
-	return "Course List"
+	return render_template('getcourses.html',course_list = course_list)
 
 @app.route('/getattendance', methods=["GET","POST"])
 @login_required
@@ -207,7 +207,7 @@ def getregisteredstudents():
 	student_list = [x.User_ID for x in student_list]
 
 	print(student_list)
-	return "Student List"
+	return render_template('registered_students.html',student_list = student_list)
 
 def gen_frame():
     """Video streaming generator function."""
