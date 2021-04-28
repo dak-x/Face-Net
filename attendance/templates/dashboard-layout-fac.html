@@ -24,6 +24,7 @@
 
   <!-- Page Wrapper -->
   <div id="wrapper">
+    
 
     <!-- Sidebar -->
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
@@ -59,24 +60,14 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <!-- Nav Item - Tables -->
+      {% for i in (faculty_list) %}
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('course1') }}">
           <i class="fas fa-fw fa-book"></i>
-          <span>CSL334</span></a>
+          <span>{{i[1]}}: {{i[2]}}</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('course2') }}">
-          <i class="fas fa-fw fa-book"></i>
-          <span>CSL331</span></a>
-      </li>
-
+      {% endfor %}   
       <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('course3') }}">
-          <i class="fas fa-fw fa-book"></i>
-          <span>CSL352</span></a>
-      </li>
-
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 

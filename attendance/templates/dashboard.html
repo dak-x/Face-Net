@@ -36,7 +36,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Student ID</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">2018UXX0067</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ student_data.Id }}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-barcode fa-2x text-gray-300"></i>
@@ -55,7 +55,7 @@
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Department</div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Computer Science and Engineering</div>
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ student_data.Department }}</div>
                         </div>                        
                       </div>
                     </div>
@@ -74,7 +74,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Semester</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">VI</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{ student_data.Semester }}</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-bookmark fa-2x text-gray-300"></i>
@@ -168,12 +168,7 @@
                   <div class="chart-pie pt-4 pb-2">
                     <canvas id="myPieChart"></canvas>
                   </div>
-                  <div class="mt-4 text-center small" id="chart_label">
-        
-                    
-                    <!-- <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Referral
-                    </span> -->
+                  <div class="mt-4 text-center small" id="chart_label"/>        
                   </div>
                 </div>
               </div>
@@ -192,16 +187,7 @@
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                   <h6 class="m-0 font-weight-bold text-primary">Attendance Overview</h6>
                   <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
+                    
                   </div>
                 </div>
                 <!-- Card Body -->
@@ -393,7 +379,7 @@ var myPieChart = new Chart(ctx, {
       caretPadding: 10,
     },
     legend: {
-      display: false
+      display: true      
     },
     cutoutPercentage: 80,
   },
