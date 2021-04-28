@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="content-section">
-    <h1>Registered Courses</h1>    
+    <h1>Registered Students</h1>    
 </div>
 <div class="content-section">
   <ul>
-      {% for i in course_list %}
+      {% for i in student_list %}
       <li style="font-size: 18px;">{{i}}</li>
       {% endfor %}
   </ul>
