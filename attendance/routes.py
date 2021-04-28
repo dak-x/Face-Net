@@ -297,4 +297,7 @@ def course():
 	faculty_id = request.args.get('faculty_id')
 	name = request.args.get('faculty_name')
 	reg_students = getregisteredstudents(c_id)
-	return render_template('course.html',c_id = c_id, f_id = faculty_id, name = name, reg_students = reg_students)
+	faculty_id = current_user.username
+	faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
+	course_teaches = Teaches.query.filter_by(Faculty_ID = faculty_id)
+	return render_template('course.html',c_id = c_id,faculty_data=faculty_data, course_teaches = course_teaches, f_id = faculty_id, name = name, reg_students = reg_students)
