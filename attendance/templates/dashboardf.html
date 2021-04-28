@@ -6,7 +6,7 @@
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Faculty Dashboard</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <a href="{{ url_for('getattendance', user_id = current_user.username) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
           </div>
 
           <!-- Content Row -->
@@ -89,25 +89,94 @@
           <!-- Content Row -->
           <div class="row">
           
-            <!-- Content Column -->            
+            <!-- Content Column --> 
+            <div class="col-lg-6 mb-4">
+          
+              <!-- Project Card Example -->
+              <!-- Project Card Example -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Attendence</h6>
+                </div>
+                <div class="card-body" id="bar_plot">
+                  
+                </div>
+              </div>
+          
+              <!-- Color System -->
+              <!-- <div class="row">
+                          <div class="col-lg-6 mb-4">
+                            <div class="card bg-primary text-white shadow">
+                              <div class="card-body">
+                                Primary
+                                <div class="text-white-50 small">#4e73df</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6 mb-4">
+                            <div class="card bg-success text-white shadow">
+                              <div class="card-body">
+                                Success
+                                <div class="text-white-50 small">#1cc88a</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6 mb-4">
+                            <div class="card bg-info text-white shadow">
+                              <div class="card-body">
+                                Info
+                                <div class="text-white-50 small">#36b9cc</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6 mb-4">
+                            <div class="card bg-warning text-white shadow">
+                              <div class="card-body">
+                                Warning
+                                <div class="text-white-50 small">#f6c23e</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6 mb-4">
+                            <div class="card bg-danger text-white shadow">
+                              <div class="card-body">
+                                Danger
+                                <div class="text-white-50 small">#e74a3b</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-lg-6 mb-4">
+                            <div class="card bg-secondary text-white shadow">
+                              <div class="card-body">
+                                Secondary
+                                <div class="text-white-50 small">#858796</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div> -->
+          
+            </div>
             <!-- Pie Chart -->
             <div class="col-xl-6 col-lg-6">
-            <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Attendance Overview</h6>
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Attendance Overview</h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                  <div class="chart-pie pt-4 pb-2">
+                    <canvas id="myPieChart"></canvas>
+                  </div>
+                  <div class="mt-4 text-center small" id="chart_label"/>        
+                  </div>
+                </div>
+              </div>
             </div>
-            <!-- Card Body -->
-            <div class="card-body">
-            <div class="chart-pie pt-4 pb-2">
-            <canvas id="myPieChart"></canvas>
-            </div>
-            <div class="mt-4 text-center small" id="chart_label">
-            </div>
-            </div>
-            </div>
-            </div> 
-          </div>          
+        
+
+        </div>         
+
         </div>
         <!-- /.container-fluid -->
       </div>
@@ -140,71 +209,115 @@
   <!-- Page level custom scripts -->
   <script src="static/js/demo/chart-area-demo.js"></script>
 
-<script type="text/javascript">
+  <script type="text/javascript">
 
-  var counter = 1;
-  var org=JSON.parse('{{ jsonfile|safe }}');
-  console.log(org);
-function get_random_color() {
-    var letters = 'ABCDE'.split('');
-    var color = '#';
-    for (var i=0; i<3; i++ ) {
-        color += letters[Math.floor(Math.random() * letters.length)];
-    }
-    return color;
-
-}
-
-
-var result1 = [];
-var result2 = [];
-var result3 = ["rgb(0,0,255)","rgb(255,0,0)"];
- 
-for (x in org){
-  result1.push(x);
-  result2.push(org[x]);  
-}
-
-
-
-
-
-
-Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
-
-// Pie Chart Example
-var ctx = document.getElementById("myPieChart");
-var myPieChart = new Chart(ctx, {
-  type: 'doughnut',
-  data: {
-    labels: result1,
-    datasets: [{
-      data: result2,
-      backgroundColor: result3,
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    tooltips: {
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      caretPadding: 10,
-    },
-    legend: {
-      display: true      
-    },
-    cutoutPercentage: 80,
-  },
-});
-
+    var counter = 1;
+        
+    function add_bar(Subject,num) {
+                   
+    console.log("Adding bar "+counter+"\n");
+      
+    var newTextBoxDiv = $(document.createElement('div'))
+         .attr("id", 'bar_div' + counter);
+                
+   
+    newTextBoxDiv.after().html('<h4 class="small font-weight-bold" id="bar'+counter+ ' ">'+Subject+'<span class="float-right">'+
+    
+      num+'%</span></h4><div class="progress mb-4 progress-bar" role="progressbar" style="width: '+num+'%" aria-valuenow="'+num+'" aria-valuemin="0" aria-valuemax="100"></div>' );
   
-</script>
+  
+                      
+  
+            
+    newTextBoxDiv.appendTo("#bar_plot");
+    // document.getElementById("number").value = counter
+                
+    counter++;
+     }
+  
+    var org=JSON.parse('{{ jsonfile|safe }}');
+    console.log(org);
+    var arr=org["bar"];
+    var arr2=org["pie"];
+  
+    console.log(arr);   
+    for (x in arr) {
+      add_bar(x,arr[x]);
+  } 
+  
+  
+  function get_random_color() {
+      var letters = 'ABCDE'.split('');
+      var color = '#';
+      for (var i=0; i<3; i++ ) {
+          color += letters[Math.floor(Math.random() * letters.length)];
+      }
+      return color;
+  
+  }
+  
+  
+  var result1 = [];
+  var result2 = [];
+  var result3 = ['#5cb85c ','#d9534f '];
+   
+  for (x in arr2){
+    result1.push(x);
+    result2.push(arr2[x]);  
+  }
+  
+  
+  
+  var bars = $('.progress-bar');
+  for (i = 0; i < bars.length; i++) {
+    console.log("Coloring bar"+i);
+    var progress = $(bars[i]).attr('aria-valuenow');
+    $(bars[i]).width(progress + '%');
+    if (progress >= "80") {
+      $(bars[i]).addClass("bg-success");
+    } else if (progress >= "50" && progress < "90") {
+      $(bars[i]).addClass("bg-warning");
+    } else {
+      $(bars[i]).addClass("bg-danger");
+    }
+  }
+  
+  
+  Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+  Chart.defaults.global.defaultFontColor = '#858796';
+  
+  // Pie Chart Example
+  var ctx = document.getElementById("myPieChart");
+  var myPieChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: result1,
+      datasets: [{
+        data: result2,
+        backgroundColor: result3,
+      }],
+    },
+    options: {
+      maintainAspectRatio: false,
+      tooltips: {
+        backgroundColor: "rgb(255,255,255)",
+        bodyFontColor: "#858796",
+        borderColor: '#dddfeb',
+        borderWidth: 1,
+        xPadding: 15,
+        yPadding: 15,
+        displayColors: false,
+        caretPadding: 10,
+      },
+      legend: {
+        display: true      
+      },
+      cutoutPercentage: 80,
+    },
+  });
+  
+    
+  </script>
 
 </body>
 

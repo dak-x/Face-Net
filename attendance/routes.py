@@ -4,7 +4,7 @@ from PIL import Image
 import os
 from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty, Teaches
 
-from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
+from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response, send_file
 
 from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm, Add_Attendance_Widget_Form
 
@@ -15,7 +15,38 @@ from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime,date, timedelta
 from attendance.camera import camera_stream, authenticate
 import json
+import xlsxwriter
+from io import BytesIO
 
+def xcelwriter(student_id,course_id, attnd):
+	# print(attnd)
+	output = BytesIO()
+	workbook = xlsxwriter.Workbook(output)
+	worksheet = workbook.add_worksheet()
+
+	worksheet.write(0,0,"ID")
+	worksheet.write(0,1,student_id)
+	worksheet.write(1,0,"Course ID")
+	worksheet.write(1,1,course_id)
+	worksheet.write(2,0,"Date")
+	worksheet.write(2,1,"Time of Entry")
+
+
+	r = 3
+	print(attnd)
+	for course_date in attnd:
+		val = attnd[course_date] 
+		if(val==False):
+			val = "Absent"
+		worksheet.write(r,0,str(course_date))
+		worksheet.write(r,1,val)
+		r+=1
+
+	workbook.close()
+	output.seek(0)
+	# workbook.save("attendance_record.xlsx")
+
+	return send_file(output, attachment_filename="attendance_"+course_id+".xlsx", as_attachment=True)
 
 def get_breakup(course_id):
 	stude_list = getregisteredstudents(course_id)
@@ -277,7 +308,7 @@ def getattendance():
 		# print(date_lower, date_upper)
 		result = get_course_wise(date_lower, date_upper, user_id, course_id)
 		# print(result)
-		return render_template("attended_days.html",result = result)
+		return xcelwriter(user_id, course_id, result)
 	return render_template("filter_attendance.html", form = form)
 
 
@@ -306,7 +337,6 @@ def faculty_home():
 		plot_data = {"bar":bar_data, "pie":pie_data}
 		faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
 		course_teaches = Teaches.query.filter_by(Faculty_ID = faculty_id)
-		plot_data = {"a":25, "b":75}
 		return render_template('dashboardf.html', faculty_data=faculty_data, course_teaches = course_teaches, jsonfile = json.dumps(plot_data))
 
 @app.route("/course")
@@ -318,5 +348,5 @@ def course():
 	faculty_id = current_user.username
 	faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
 	course_teaches = Teaches.query.filter_by(Faculty_ID = faculty_id)
-	plot_data = {"a":25, "b":75}
+	plot_data = get_breakup(c_id)
 	return render_template('course.html',c_id = c_id,faculty_data=faculty_data, course_teaches = course_teaches, f_id = faculty_id, name = name, reg_students = reg_students, jsonfile = json.dumps(plot_data))
