@@ -9,7 +9,7 @@ timeTable = {
         'CSL380':['9:00','10:00'],
         'CSL352':['10:00','11:00'],
         'CSL362':['12:00','13:00'],
-        'MTL146':['13:00','14:00']],
+        'MTL146':['13:00','14:00'],
         'HUL211':['17:00','18:00']
     },
     '2':{
@@ -31,16 +31,37 @@ timeTable = {
         'CSL331':['14:00','16:00']
     }
 }
+import datetime
+import attendance, attendance.models
+
 
 dummy_date = datetime.date.today()
+
+entries = []
 for day in timeTable:
     courses_curr = timeTable[day]
     for course in courses_curr:
-        h1 = courses_curr[]
-        start = datetime.time(hour=int(),minute=0)
-        end = datetime.time(hour=17,minute=0)
 
-st_date = datetime.datetime.combine(dummy_date,start)
-en_date = datetime.datetime.combine(dummy_date,end)
-print(st_date, en_date)
-t1 = TimeTable(Course_ID = "CSL333", Day= 1, Semester=6, Start_Time = st_date, End_Time = en_date)
+        h1,m1 = map(int,courses_curr[course][0].split(":"))
+        h2,m2 = map(int,courses_curr[course][1].split(":"))
+
+        start = datetime.time(hour=h1,minute=m1)
+        end = datetime.time(hour=h2,minute=m2)
+        st_date = datetime.datetime.combine(dummy_date,start)
+        en_date = datetime.datetime.combine(dummy_date,end)
+
+        ob = attendance.models.TimeTable(Course_ID = course, Day=day,Start_Time = st_date, End_Time=en_date,Semester=6)
+        # ob.Course_ID = course
+        # ob.Day = day
+        # ob.Start_Time = st_date
+        # ob.End_Time = en_date
+        # ob.Semester = 6
+        print(ob.Course_ID)
+        entries.append(ob)
+
+# attendance.db.session.add_all(entries)
+# commit using this.
+# attendance.db.session.commit()
+
+
+t1 = attendance.models.TimeTable(Course_ID = "CSL333", Day= 1, Semester=6, Start_Time = st_date, End_Time = en_date)
