@@ -5,7 +5,11 @@ import os
 from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response
-from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm, Add_Attendance_Widget_Form, FindDate
+
+from attendance.form import RegistrationForm, LoginForm, UpdateAccountForm, markattendanceForm, Add_Attendance_Widget_Form
+
+from attendance.form import FindDate
+# >>>>>>> 7feff037918ef28d6d2435b3d9514df8328f0213
 from attendance import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime,date, timedelta
@@ -220,3 +224,15 @@ def video_feed():
 @app.route("/faculty")
 def faculty_home():
 		return render_template('dashboardf.html')
+
+@app.route("/course1")
+def course1():
+		return render_template('course1.html')
+
+@app.route("/course2")
+def course2():
+		return render_template('course2.html')
+
+@app.route("/course3")
+def course3():
+		return render_template('course3.html')
