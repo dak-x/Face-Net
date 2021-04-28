@@ -49,7 +49,7 @@ def get_course_wise(date_lower, date_upper, user_id, course_id):
 @app.route("/home",methods=["GET","POST"])
 def home():
 	if(current_user.is_authenticated and current_user.username[0] == 'F'):
-		return "Faculty dashboard"
+		return redirect(url_for('faculty_home'))
 	elif(current_user.is_authenticated):
 		student_data = Student.query.filter_by(Stud_ID = current_user.username).first()
 		bar_data = {"CSL333":75, "CSL362":90, "MTL146":45, "CSL380":50}
@@ -230,5 +230,8 @@ def faculty_home():
 		return render_template('dashboardf.html', faculty_data=faculty_data, course_teaches = course_teaches)
 
 @app.route("/course")
-def course(c_id, faculty_id, name):		
-		return render_template('course.html',c_id = c_id, f_id = faculty_id, name = name)
+def course():	
+	c_id = request.args.get('course_id')
+	faculty_id = request.args.get('faculty_id')
+	name = request.args.get('faculty_name')
+	return render_template('course.html',c_id = c_id, f_id = faculty_id, name = name)
