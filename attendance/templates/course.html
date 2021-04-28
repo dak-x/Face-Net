@@ -172,8 +172,10 @@
 
             <!-- Area Chart -->
             <!-- Page Heading -->
+          <div class="container-fluid">
           <div class="d-sm-flex align-items-center justify-content-between mb-4" >            
             <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+          </div>
           </div>
             <div class="col-xl-12 col-lg-9">
               <div class="card shadow mb-4">
@@ -183,18 +185,15 @@
                   
                 </div>
                 <!-- Card Body -->                
-                <div class="card shadow mb-4">
-                  <h2>LIST OF STUDENTS </h2>
-                </div>
+                <div class="card">                  
+                  <div class="h2 m-lg-2 text-lg-center font-weight-bold text-gray-800"> &nbsp  &nbsp LIST OF REGISTERED STUDENTS</div>
+                </div>                  
                 {% for student in reg_students %}  
-                <div class="card shadow mb-4">
-                  <h6> {{ student }} </h6>
-                </div>  
+                <div class="h5 m-lg-1 font-weight-bold text-gray-800"> &nbsp  &nbsp {{ loop.index }}.  &nbsp {{ student }}</div>  
+                <hr class="sidebar-divider my-4">
                 {% endfor %}          
               </div>
-            </div>
-
-            
+            </div>          
 
           
 
