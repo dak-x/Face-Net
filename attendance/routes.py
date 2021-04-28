@@ -10,6 +10,7 @@ from attendance import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime,date, timedelta
 from attendance.camera import camera_stream, authenticate
+import json
 
 @app.route("/") #index
 @app.route("/home")
@@ -18,7 +19,8 @@ def home():
 		return "Faculty dashboard"
 	elif(current_user.is_authenticated):
 		student_data = Student.query.filter_by(Stud_ID = current_user.username).first()
-		return render_template('dashboard.html', student_data = student_data)
+		atten_data = {"CSL333":75, "CSL362":90, "MTL146":45, "CSL380":50}
+		return render_template('dashboard.html', student_data = student_data, jsonfile = json.dumps(atten_data))
 	else:
 		return redirect(url_for('login'))
 
