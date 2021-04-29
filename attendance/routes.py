@@ -2,7 +2,7 @@ import secrets
 import sqlite3
 from PIL import Image
 import os
-from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty, Teaches
+from attendance.models import TimeTable, User, Attendance_Entry, takes, Student, Faculty, Teaches, Course
 
 from flask import Flask, render_template, url_for, flash, redirect, request,abort, Response, send_file
 
@@ -342,6 +342,7 @@ def faculty_home():
 @app.route("/course")
 def course():	
 	c_id = request.args.get('course_id')
+	course_name = (Course.query.filter_by(Course_ID = c_id).first()).Name
 	faculty_id = request.args.get('faculty_id')
 	name = request.args.get('faculty_name')
 	reg_students = getregisteredstudents(c_id)
@@ -349,4 +350,4 @@ def course():
 	faculty_data = Faculty.query.filter_by(Faculty_ID = faculty_id).first()
 	course_teaches = Teaches.query.filter_by(Faculty_ID = faculty_id)
 	plot_data = get_breakup(c_id)
-	return render_template('course.html',c_id = c_id,faculty_data=faculty_data, course_teaches = course_teaches, f_id = faculty_id, name = name, reg_students = reg_students, jsonfile = json.dumps(plot_data))
+	return render_template('course.html',c_id = c_id,faculty_data=faculty_data, course_teaches = course_teaches, f_id = faculty_id, name = name, reg_students = reg_students, course_name = course_name,jsonfile = json.dumps(plot_data))
